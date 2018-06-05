@@ -50,7 +50,7 @@ topology_template:
     node_type: onap.vcpe_vgmux
     requirements:
       virtual_link: [ Cp_vgmux_public, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vgmux_onap_private, virtual_link ] # expose as external CP
+#      virtual_link: [ Cp_vgmux_onap_private, virtual_link ] # expose as external CP
 
   inputs:
     vcpe_image_name:

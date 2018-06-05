@@ -50,13 +50,13 @@ topology_template:
     node_type: onap.vcpe_infra
     requirements:
       virtual_link: [ Cp_vaaa_public, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vdns_public, virtual_link ]
-      virtual_link: [ Cp_vdns_onap_private, virtual_link ]
-      virtual_link: [ Cp_vdhcp_public, virtual_link ]
-      virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
-      virtual_link: [ Cp_vweb_public, virtual_link ]
-      virtual_link: [ Cp_vweb_onap_private, virtual_link ]
+#      virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
+#      virtual_link: [ Cp_vdns_public, virtual_link ]
+#      virtual_link: [ Cp_vdns_onap_private, virtual_link ]
+#      virtual_link: [ Cp_vdhcp_public, virtual_link ]
+#      virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
+#      virtual_link: [ Cp_vweb_public, virtual_link ]
+#      virtual_link: [ Cp_vweb_onap_private, virtual_link ]
 
   inputs:
     vcpe_image_name:

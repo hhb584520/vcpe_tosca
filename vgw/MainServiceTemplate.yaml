@@ -50,7 +50,7 @@ topology_template:
     node_type: onap.vcpe_vgw
     requirements:
       virtual_link: [ Cp_vgw_public, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vgw_onap_private, virtual_link ] # expose as external CP
+      #virtual_link: [ Cp_vgw_onap_private, virtual_link ] # expose as external CP
 
   inputs:
     vcpe_image_name:
