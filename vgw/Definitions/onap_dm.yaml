@@ -176,7 +176,7 @@ data_types:
         vdu_memory_requirements:
           type: map
           entry_schema:
-           type: string
+            type: string
           required: false
         numa_enabled:
           type: boolean
@@ -201,7 +201,7 @@ data_types:
       vdu_cpu_requirements:
         type: map
         entry_schema:
-           type: string
+          type: string
         required: false
       virtual_cpu_pinning:
         type: tosca.datatypes.nfv.VirtualCpuPinning
