@@ -8,61 +8,20 @@ description: vCPE_vbng
 imports:
   - onap_dm.yaml
 
-node_types:
-  onap.vcpe_vbng:
-    derived_from: tosca.nodes.nfv.VNF
-    properties:
-      descriptor_id:
-        type: string
-        constraints: [ valid_values: [ b1bb0ce7-5555-4fa7-95ed-4840d70a1177 ] ]
-        default: b1bb0ce7-5555-4fa7-95ed-4840d70a1177
-      provider:
-        type: string
-        constraints: [ valid_values: [ onap ] ]
-        default: onap
-      product_name:
-        type: string
-        constraints: [ valid_values: [ vcpe_vbng ] ]
-        default: vcpe_vbng
-      software_version:
-        type: string
-        constraints: [ valid_values: [ '1.0' ] ]
-        default: '1.0'
-      descriptor_version:
-        type: string
-        constraints: [ valid_values: [ '1.0' ] ]
-        default: '1.0'
-      flavour_id:
-        type: string
-        constraints: [ valid_values: [ simple ] ]  #only one and only allowed one DF in this example
-        default: simple
-      flavour_description:
-        type: string
-        default: simple
-      vnfm_info:
-        type: list
-        entry_schema:
-          type: string
-        default: ['gvnfm']
-
 topology_template:
-  substitution_mappings:
-    node_type: onap.vcpe_vbng
-    requirements:
-      virtual_link: [ Cp_vbng_public, virtual_link ] # expose as external CP
-#      virtual_link: [ Cp_vbng_onap_private, virtual_link ] # expose as external CP
-
   inputs:
     vcpe_image_name:
       type: string
       description: image name for vcpe in openstack glance
       default: ubuntu_16.04
-    #public_net_id:
-    #  type: string
-    #  description: public network id used during onap installation
-    #onap_private_net_id:
-    #  type: string
-    #  description: onap OAM network id
+    public_net_id:
+      type: string
+      description: public network id used during onap installation
+      default: public_network
+    onap_private_net_id:
+      type: string
+      description: onap OAM network id
+      default: onap_public_network
     onap_private_net_cidr:
       type: string
       description: oanp OAM network cidr
@@ -170,35 +129,35 @@ topology_template:
 
   node_templates:
     #onap public net
-    #VL_public:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: public_net_id }
+    VL_public:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: public_net_id }
 
     #onap oam net
-    #VL_onap_private:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: onap_private_net_id }
-    #      cidr: { get_input: onap_private_net_cidr }
+    VL_onap_private:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: onap_private_net_id }
+          cidr: { get_input: onap_private_net_cidr }
 
     #Private network that connects vBRG to vBNG
     VL_brgemu_bng_private_net:
@@ -265,8 +224,10 @@ topology_template:
                 ip_address_assignment: false
                 floating_ip_activated: false
       requirements:
-        - virtual_binding: VDU_vbng_0
-        #- virtual_link: VL_public
+        - virtual_binding:
+            node: VDU_vbng_0
+        - virtual_link:
+            node: VL_public
 
     Cp_vbng_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -283,8 +244,10 @@ topology_template:
                 fixed_ip_address:
                   - { get_input: vbng_private_ip_1 }
       requirements:
-        - virtual_binding: VDU_vbng_0
-        #- virtual_link: VL_onap_private
+        - virtual_binding:
+            node: VDU_vbng_0
+        - virtual_link:
+            node: VL_onap_private
 
     Cp_vbng_brgemu_bng_private_net:
       type: tosca.nodes.nfv.VduCp
@@ -308,8 +271,10 @@ topology_template:
               #dataProcessingAccelerationLibrary: dpdk_2.2
               interfaceType: virtio
       requirements:
-        - virtual_binding: VDU_vbng_0
-        - virtual_link: VL_brgemu_bng_private_net
+        - virtual_binding:
+            node: VDU_vbng_0
+        - virtual_link:
+            node: VL_brgemu_bng_private_net
 
     Cp_vbng_cpe_signal:
       type: tosca.nodes.nfv.VduCp
@@ -326,8 +291,10 @@ topology_template:
                 fixed_ip_address:
                   - { get_input: vbng_private_ip_2 }
       requirements:
-        - virtual_binding: VDU_vbng_0
-        - virtual_link: VL_cpe_signal
+        - virtual_binding:
+            node: VDU_vbng_0
+        - virtual_link:
+            node: VL_cpe_signal
 
     Cp_vbng_bng_gmux_private_net:
       type: tosca.nodes.nfv.VduCp
@@ -351,8 +318,10 @@ topology_template:
               #dataProcessingAccelerationLibrary: dpdk_2.2
               interfaceType: virtio
       requirements:
-        - virtual_binding: VDU_vbng_0
-        - virtual_link: VL_bng_gmux_private_net
+        - virtual_binding:
+            node: VDU_vbng_0
+        - virtual_link:
+            node: VL_bng_gmux_private_net
 
     VirtualStorage_root_all:
       # this indicate the VDU root storage size 
@@ -373,8 +342,8 @@ topology_template:
           max_number_of_instances: 1
           watchdog: none
         inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
@@ -422,5 +391,5 @@ topology_template:
       artifacts:
         sw_image: #TODO need to put glance image name here
           #file: { get_input: vcpe_image_name }
-          file: ../Artifacts/images/ubuntu_16.04
+          file: ../Artifacts/images/vbng_base_ubuntu_1604
           type: tosca.artifacts.nfv.SwImage
