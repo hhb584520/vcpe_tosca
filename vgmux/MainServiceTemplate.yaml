@@ -312,12 +312,14 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
+        inject_files:
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
         user_data: { concat: ["#!/bin/bash\n",
                               "mkdir /opt/config\n",
-                              "echo \"", {get_input: pub_key}, "\" > /home/ubuntu/.ssh/authorized_keys\n",
                               "echo \"", {get_input: vgmux_private_ip_0}, "\" > /opt/config/mux_to_bng_net_ipaddr.txt\n",
                               "echo \"", {get_input: vgmux_private_ip_1}, "\" > /opt/config/oam_ipaddr.txt\n",
                               "echo \"", {get_input: vgmux_private_ip_2}, "\" > /opt/config/mux_gw_net_ipaddr.txt\n",
@@ -361,6 +363,6 @@ topology_template:
       artifacts:
         sw_image: #TODO need to put glance image name here
           #file: { get_input: vcpe_image_name }
-          file: ../Artifacts/Informational/vgmux_base_ubuntu_1604
+          file: ../Artifacts/images/vgmux_base_ubuntu_1604
           type: tosca.artifacts.nfv.SwImage
 
