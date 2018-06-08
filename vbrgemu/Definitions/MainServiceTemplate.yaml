@@ -37,11 +37,7 @@ topology_template:
     vbrgemu_private_ip_0:
       type: string
       description: Private IP address towards the BRGEMU-BNG network
-      default: 10.3.0.4
-    vbrgemu_private_ip_1:
-      type: string
-      description: Private IP address that is assigned to the BRGEMU to communicate with ONAP components
-      default: 10.0.101.20
+      default: 10.3.0.2
     vbrgemu_name_0:
       type: string
       description: Name of the vBRGEMU
