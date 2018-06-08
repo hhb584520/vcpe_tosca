@@ -53,7 +53,7 @@ topology_template:
     vgw_private_ip_2:
       type: string
       description: Private IP address that is assigned to the vGW to communicate with vCPE public network
-      default: 10.2.0.3
+      default: 10.2.0.2
     vgw_name_0:
       type: string
       description: Name of the vGW
