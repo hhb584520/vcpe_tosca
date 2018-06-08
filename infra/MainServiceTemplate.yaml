@@ -97,7 +97,7 @@ topology_template:
     vaaa_private_ip_0:
       type: string
       description: ip of vaaa port to cpe signal net 
-      default: 10.4.0.4
+      default: 10.4.0.2
     vaaa_private_ip_1:
       type: string
       description: ip of vaaa port to onap oam net 
