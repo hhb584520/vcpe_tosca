@@ -123,22 +123,6 @@ topology_template:
             leaf: 10000000
           networkName: { get_input: public_net_id }
 
-    #onap oam net
-    VL_onap_private:
-      type: tosca.nodes.nfv.VnfVirtualLink
-      properties:
-        connectivity_type:
-          layer_protocol: ipv4
-        vl_profile:
-          max_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          min_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          networkName: { get_input: onap_private_net_id }
-          cidr: { get_input: onap_private_net_cidr }
-
     #Private network that connects vBRGEMU to vBNG
     VL_vbrgemu_bng_private_net:
       type: tosca.nodes.nfv.VnfVirtualLink
@@ -172,27 +156,6 @@ topology_template:
       requirements:
         - virtual_binding: VDU_vbrgemu_0
         - virtual_link: VL_public
-
-    # onap
-    Cp_vbrgemu_onap_private:
-      type: tosca.nodes.nfv.VduCp
-      properties:
-        layer_protocol: [ipv4]
-        trunk_mode: false
-        protocol_data:
-          - asscociated_layer_protocol: ipv4
-            address_data:
-              address_type: ip_address
-              l3_address_data:
-                ip_address_assignment: false
-                floating_ip_activated: false
-                fixed_ip_address:
-                  - { get_input: vbrgemu_private_ip_1 }
-      requirements:
-        - virtual_binding: 
-            node: VDU_vbrgemu_0
-        - virtual_link: 
-            node: VL_onap_private
 
     Cp_vbrgemu_vbrgemu_bng_private_net:
       type: tosca.nodes.nfv.VduCp
