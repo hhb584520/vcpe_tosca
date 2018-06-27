@@ -127,6 +127,7 @@ topology_template:
     #onap public net
     VL_public:
       type: tosca.nodes.nfv.VnfVirtualLink
+      description: VL_public
       properties:
         connectivity_type:
           layer_protocol: ipv4
@@ -142,6 +143,7 @@ topology_template:
     #onap oam net
     VL_onap_private:
       type: tosca.nodes.nfv.VnfVirtualLink
+      description: VL_onap_private
       properties:
         connectivity_type:
           layer_protocol: ipv4
@@ -158,6 +160,7 @@ topology_template:
     #Private network that connects vGMUX to vGWs
     VL_mux_gw_private_net:
       type: tosca.nodes.nfv.VnfVirtualLink
+      description: VL_mux_gw_private_net
       properties:
         connectivity_type:
           layer_protocol: ipv4
@@ -175,6 +178,7 @@ topology_template:
     #cpe public network
     VL_cpe_public:
       type: tosca.nodes.nfv.VnfVirtualLink
+      description: VL_cpe_public
       properties:
         connectivity_type:
           layer_protocol: ipv4
