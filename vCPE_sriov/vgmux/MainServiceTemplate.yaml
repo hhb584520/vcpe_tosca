@@ -255,13 +255,16 @@ topology_template:
                 floating_ip_activated: false
                 fixed_ip_address:
                   - { get_input: vgmux_private_ip_0 }
+        vnic_type: "direct"
         virtual_network_interface_requirements:
-          - name: dpdk support
+          - name: "sriov-support"
             support_mandatory: true
-            #TODO HPA
             network_interface_requirements:
-              #dataProcessingAccelerationLibrary: dpdk_2.2
-              interfaceType: virtio
+              interfaceType: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "SR-IOV"}'
+            nic_io_requirements:
+              pciVendorId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1234"}'
+              pciDeviceId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "5678"}'
+              pciNumDevices: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1"}'
       requirements:
         - virtual_binding: VDU_vgmux_0
         - virtual_link: VL_bng_gmux_private_net
@@ -280,13 +283,16 @@ topology_template:
                 floating_ip_activated: false
                 fixed_ip_address:
                   - { get_input: vgmux_private_ip_2 }
+        vnic_type: "direct"
         virtual_network_interface_requirements:
-          - name: dpdk support
+          - name: "sriov-support"
             support_mandatory: true
-            #TODO HPA
             network_interface_requirements:
-              #dataProcessingAccelerationLibrary: dpdk_2.2
-              interfaceType: virtio
+              interfaceType: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "SR-IOV"}'
+            nic_io_requirements:
+              pciVendorId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1234"}'
+              pciDeviceId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "5678"}'
+              pciNumDevices: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1"}'        
       requirements:
         - virtual_binding: VDU_vgmux_0
         - virtual_link: VL_mux_gw_private_net
