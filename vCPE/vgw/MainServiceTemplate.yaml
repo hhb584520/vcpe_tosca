@@ -265,11 +265,11 @@ topology_template:
           - name: "sriov-support"
             support_mandatory: true
             network_interface_requirements:
-              interfaceType: '{"schema-version": "0", "schema-location":"", "platform-id": "generic", "mandatory": false, "configuration-value": "SR-IOV"}'
+              interfaceType: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "SR-IOV"}'
             nic_io_requirements:
-              pciVendorId: '{"schema-version": "0", "schema-location":"", "platform-id": "generic", "mandatory": false, "configuration-value": "1234"}'
-              pciDeviceId: '{"schema-version": "0", "schema-location":"", "platform-id": "generic", "mandatory": false, "configuration-value": "5678"}'
-              pciNumDevices: '{"schema-version": "0", "schema-location":"", "platform-id": "generic", "mandatory": false, "configuration-value": 1}'
+              pciVendorId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1234"}'
+              pciDeviceId: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "5678"}'
+              pciNumDevices: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configuration-value": "1"}'
       requirements:
         - virtual_binding: VDU_vgw_0
         - virtual_link: VL_mux_gw_private_net
@@ -366,8 +366,8 @@ topology_template:
               virtual_mem_size: 4096 MB
               # HPA requirements
               vdu_memory_requirements:
-                memoryPageSize: '{"schema-version": "0", "schema-location": "", "platform-id": "generic", "mandatory": true, "configuration-value": "2 MB"}'
-                numberOfPages: '{"schema-version": "0","schema-location": "","platform-id": "generic","mandatory": true,"configuration-value": 1024}'
+                memoryPageSize: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "true", "configuration-value": "2 MB"}'
+                numberOfPages: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "true", "configuration-value": "1024"}'
             virtual_cpu:
               num_virtual_cpu: 2
               cpu_architecture: generic
