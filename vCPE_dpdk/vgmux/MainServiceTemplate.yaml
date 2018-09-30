@@ -256,12 +256,11 @@ topology_template:
                 fixed_ip_address:
                   - { get_input: vgmux_private_ip_0 }
         virtual_network_interface_requirements:
-          - name: dpdk support
+          - name: "dpdk support"
             support_mandatory: true
-            #TODO HPA
             network_interface_requirements:
-              #dataProcessingAccelerationLibrary: dpdk_2.2
-              interfaceType: virtio
+              dataProcessingAccelerationlibrary: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configurationValue": "DPDK"}'
+              dataProcessingAccelerationlibraryVersion: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configurationValue": "1.4"}'
       requirements:
         - virtual_binding: VDU_vgmux_0
         - virtual_link: VL_bng_gmux_private_net
@@ -281,12 +280,11 @@ topology_template:
                 fixed_ip_address:
                   - { get_input: vgmux_private_ip_2 }
         virtual_network_interface_requirements:
-          - name: dpdk support
+          - name: "dpdk support"
             support_mandatory: true
-            #TODO HPA
             network_interface_requirements:
-              #dataProcessingAccelerationLibrary: dpdk_2.2
-              interfaceType: virtio
+              dataProcessingAccelerationlibrary: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configurationValue": "DPDK"}'
+              dataProcessingAccelerationlibraryVersion: '{"schemaVersion": "0", "schemaSelector":"", "hardwarePlatform": "generic", "mandatory": "false", "configurationValue": "1.4"}'
       requirements:
         - virtual_binding: VDU_vgmux_0
         - virtual_link: VL_mux_gw_private_net
@@ -366,8 +364,8 @@ topology_template:
               virtual_mem_size: 4096 MB
               # HPA requirements
               vdu_memory_requirements:
-                memoryPageSize: '{"schema-version": "0", "schema-location": "", "platform-id": "generic", "mandatory": true, "configuration-value": "2 MB"}'
-                numberOfPages: '{"schema-version": "0","schema-location": "","platform-id": "generic","mandatory": true,"configuration-value": 1024}'
+                memoryPageSize: '{"schemaVersion": "0", "schemaSelector": "", "hardwarePlatform": "generic", "mandatory": "true", "configurationVvalue": "2 MB"}'
+                numberOfPages: '{"schemaVersion": "0","schemaSelector": "", "hardwarePlatform": "generic","mandatory": "true", "configurationValue": "1024"}'
             virtual_cpu:
               num_virtual_cpu: 2
               cpu_architecture: generic
