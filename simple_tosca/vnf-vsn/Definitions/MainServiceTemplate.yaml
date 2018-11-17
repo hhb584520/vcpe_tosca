@@ -29,7 +29,7 @@ node_types:
       vnfm_info:
         type: list
         entry_schema:
-        type: string
+          type: string
 
 topology_template:
   inputs:
@@ -41,6 +41,14 @@ topology_template:
       type: string
       description: The CIDR of the vsn2 private network
       default: 10.5.0.0/24
+    vsn1_vsn2_common_private_net_id:
+      type: string
+      description: Private ywh network common that connects vsn1 to vsn2
+      default: intelvsn1vsn202_private
+    vsn1_vsn2_common_private_net_cidr:
+      type: string
+      description: The CIDR of the vsn2 commonn private network
+      default: 10.3.0.0/24
     vsn1_name_0:
       type: string
       description: Name of the vsn1
@@ -57,6 +65,14 @@ topology_template:
       type: string
       description: IP address of vsn2
       default: 10.5.0.22
+    vsn1_common_ip_addr:
+      type: string
+      description: IP address of vsn1 common
+      default: 10.3.0.21
+    vsn2_common_ip_addr:
+      type: string
+      description: IP address of vsn2 common
+      default: 10.3.0.22
     vnf_id:
       type: string
       description: The VNF ID is provided by ONAP
@@ -102,8 +118,25 @@ topology_template:
             leaf: 10000000
           networkName: { get_input: vsn1_vsn2_private_net_id}
           cidr: { get_input: vsn1_vsn2_private_net_cidr }
-          dhcpEnabled: false
-          physicalNetwork: "physnet1"
+          dhcpEnabled: true
+          physicalNetwork: "lsw-05-sriov-1"
+          networkType: vlan
+
+    VL_vsn1_vsn2_common_private_net:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: vsn1_vsn2_common_private_net_id}
+          cidr: { get_input: vsn1_vsn2_common_private_net_cidr }
+          dhcpEnabled: true
 
     Cp_vsn1_vsn2_private_net:
       type: tosca.nodes.nfv.VduCp
@@ -133,6 +166,24 @@ topology_template:
       requirements:
         - virtual_binding: VDU_vsn1_0
         - virtual_link: VL_vsn1_vsn2_private_net
+    
+    Cp_vsn1_vsn2_common_private_net:
+      type: tosca.nodes.nfv.VduCp
+      properties:
+        layer_protocol: [ipv4]
+        trunk_mode: false
+        protocol_data:
+          - asscociated_layer_protocol: ipv4
+            address_data:
+              address_type: ip_address
+              l3_address_data:
+                ip_address_assignment: false
+                floating_ip_activated: false
+                fixed_ip_address:
+                  - { get_input: vsn1_common_ip_addr }
+      requirements:
+        - virtual_binding: VDU_vsn1_0
+        - virtual_link: VL_vsn1_vsn2_common_private_net
 
     Cp_vsn2_vsn1_private_net:
       type: tosca.nodes.nfv.VduCp
@@ -163,6 +214,24 @@ topology_template:
         - virtual_binding: VDU_vsn2_0
         - virtual_link: VL_vsn1_vsn2_private_net
 
+    Cp_vsn2_vsn1_common_private_net:
+      type: tosca.nodes.nfv.VduCp
+      properties:
+        layer_protocol: [ipv4]
+        trunk_mode: false
+        protocol_data:
+          - asscociated_layer_protocol: ipv4
+            address_data:
+              address_type: ip_address
+              l3_address_data:
+                ip_address_assignment: false
+                floating_ip_activated: false
+                fixed_ip_address:
+                  - { get_input: vsn2_common_ip_addr }
+      requirements:
+        - virtual_binding: VDU_vsn2_0
+        - virtual_link: VL_vsn1_vsn2_common_private_net
+    
     VirtualStorage_root_all:
       # this indicate the VDU root storage size
       type: tosca.nodes.nfv.Vdu.VirtualStorage
@@ -227,8 +296,8 @@ topology_template:
           dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vsn2_ip_addr: { get_input: vsn2_ip_addr }
-		  install_script_version: { get_input: install_script_version }
-		  nexus_artifact_repo: { get_input: nexus_artifact_repo }
+          install_script_version : { get_input: install_script_version }
+          nexus_artifact_repo: { get_input: nexus_artifact_repo }
         user_data: |
           #!/bin/bash
           METADATA=`curl -s http://169.254.169.254/openstack/2012-08-10/meta_data.json`
@@ -252,7 +321,7 @@ topology_template:
           cd /opt
           chmod +x v_gw_install.sh
           ./v_gw_install.sh
-		  
+
       capabilities:
         virtual_compute:
           properties:
